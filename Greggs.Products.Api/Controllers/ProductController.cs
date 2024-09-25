@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Greggs.Products.Api.DataAccess;
 using Greggs.Products.Api.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +23,10 @@ public class ProductController : ControllerBase
     [HttpGet]
     public IEnumerable<Product> Get(int pageStart = 0, int pageSize = 5)
     {
+		if (pageSize == 0) {
+			return Enumerable.Empty<Product>();
+		}
+
 		return this._dataAccess.List(pageStart: pageStart, pageSize: pageSize);
 	}
 }
