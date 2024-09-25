@@ -32,6 +32,10 @@ public class ProductController : ControllerBase
 			return Enumerable.Empty<Product>();
 		}
 
+        if (pageStart < 0) {
+            pageStart = 0;
+        }
+
 		return this._dataAccess.List(pageStart: pageStart, pageSize: pageSize);
 	}
 }
