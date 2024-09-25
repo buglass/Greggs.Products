@@ -36,6 +36,8 @@ public class ProductController : ControllerBase
             pageStart = 0;
         }
 
+        pageStart = pageStart * pageSize;
+
 		return this._dataAccess.List(pageStart: pageStart, pageSize: pageSize);
 	}
 }
