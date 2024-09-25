@@ -37,3 +37,9 @@ user stories:
 **Given** an exchange rate of 1GBP to 1.11EUR<br/>
 **When** I hit a specified endpoint to get a list of products<br/>
 **Then** I will get the products and their price(s) returned
+
+## Tests
+
+### Integration tests
+
+These can be run with Newman `newman run GreggsIntegration.postman_collection.json --insecure`
