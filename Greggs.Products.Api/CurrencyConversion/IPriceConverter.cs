@@ -1,6 +1,6 @@
 ﻿namespace Greggs.Products.Api.PriceCalculation
 {
-	public interface ICurrencyPriceConverter
+	public interface IPriceConverter
 	{
 		decimal GetPrice(string currency, decimal priceInPounds);
 	}

@@ -28,7 +28,7 @@ public class ProductControllerTest
 				new ProductController(
 					new Mock<ILogger<ProductController>>().Object,
 					new ProductAccess(),
-					new CurrencyPriceConverter(new CurrencyConversionRates())
+					new PriceConverter(new ConversionRates())
 				).Get()
 		);
 	}
@@ -50,7 +50,7 @@ public class ProductControllerTest
 				new ProductController(
 					new Mock<ILogger<ProductController>>().Object,
 					new ProductAccess(),
-					new CurrencyPriceConverter(new CurrencyConversionRates())
+					new PriceConverter(new ConversionRates())
 				).Get(currencyCode: "EUR")
 		);
 	}
@@ -69,7 +69,7 @@ public class ProductControllerTest
 		new ProductController(
 		new Mock<ILogger<ProductController>>().Object,
 		new ProductAccess(),
-		new CurrencyPriceConverter(new CurrencyConversionRates())
+		new PriceConverter(new ConversionRates())
 		).Get(pageStart: 0, pageSize: 2)
 		);
 	}
@@ -87,7 +87,7 @@ public class ProductControllerTest
 		new ProductController(
 		new Mock<ILogger<ProductController>>().Object,
 		new ProductAccess(),
-		new CurrencyPriceConverter(new CurrencyConversionRates())
+		new PriceConverter(new ConversionRates())
 		).Get(pageStart: 1, pageSize: 2)
 		); ;
 	}
@@ -108,7 +108,7 @@ public class ProductControllerTest
 				new ProductController(
 					new Mock<ILogger<ProductController>>().Object,
 					new ProductAccess(),
-					new CurrencyPriceConverter(new CurrencyConversionRates())
+					new PriceConverter(new ConversionRates())
 				).Get(pageStart: -1)
 		);
 	}

@@ -17,8 +17,8 @@ public class ProductControllerTest
 	public void GetWithOversizedPageReturnsAllItems()
 	{
 		const decimal itemPrice = 1.00m;
-		var currencyPriceConverter = new Mock<ICurrencyPriceConverter>();
-		currencyPriceConverter.Setup(cpc => cpc.GetPrice(It.IsAny<string>(), It.IsAny<decimal>()))
+		var priceConverter = new Mock<IPriceConverter>();
+		priceConverter.Setup(pc => pc.GetPrice(It.IsAny<string>(), It.IsAny<decimal>()))
 			.Returns(itemPrice);
 
 		var dataAccess = new Mock<IDataAccess<ProductDTO>>();
@@ -49,7 +49,7 @@ public class ProductControllerTest
 				new ProductController(
 					new Mock<ILogger<ProductController>>().Object,
 					dataAccess.Object,
-					new CurrencyPriceConverter(new CurrencyConversionRates())
+					new PriceConverter(new ConversionRates())
 				).Get(pageStart: 0, pageSize: 7)
 		);
 	}
@@ -58,8 +58,8 @@ public class ProductControllerTest
 	public void GetWithUnavailablePageReturnsDefaultPage()
 	{
 		const decimal itemPrice = 1.00m;
-		var currencyPriceConverter = new Mock<ICurrencyPriceConverter>();
-		currencyPriceConverter.Setup(cpc => cpc.GetPrice(It.IsAny<string>(), It.IsAny<decimal>()))
+		var priceConverter = new Mock<IPriceConverter>();
+		priceConverter.Setup(pc => pc.GetPrice(It.IsAny<string>(), It.IsAny<decimal>()))
 			.Returns(itemPrice);
 
 		var dataAccess = new Mock<IDataAccess<ProductDTO>>();
@@ -82,7 +82,7 @@ public class ProductControllerTest
 				new ProductController(
 					new Mock<ILogger<ProductController>>().Object,
 					dataAccess.Object,
-					new CurrencyPriceConverter(new CurrencyConversionRates())
+					new PriceConverter(new ConversionRates())
 				).Get(pageStart: 1, pageSize: 2)
 		);
 	}
@@ -91,8 +91,8 @@ public class ProductControllerTest
 	public void GetEmptyPageReturnsNoItems()
 	{
 		const decimal itemPrice = 1.00m;
-		var currencyPriceConverter = new Mock<ICurrencyPriceConverter>();
-		currencyPriceConverter.Setup(cpc => cpc.GetPrice(It.IsAny<string>(), It.IsAny<decimal>()))
+		var priceConverter = new Mock<IPriceConverter>();
+		priceConverter.Setup(pc => pc.GetPrice(It.IsAny<string>(), It.IsAny<decimal>()))
 			.Returns(itemPrice);
 
 		var dataAccess = new Mock<IDataAccess<ProductDTO>>();
@@ -108,7 +108,7 @@ public class ProductControllerTest
 			new ProductController(
 				new Mock<ILogger<ProductController>>().Object,
 				dataAccess.Object,
-				new CurrencyPriceConverter(new CurrencyConversionRates())
+				new PriceConverter(new ConversionRates())
 			).Get(pageStart: 0, pageSize: 0)
 		);
 	}
@@ -123,7 +123,7 @@ public class ProductControllerTest
 			new ProductController(
 				new Mock<ILogger<ProductController>>().Object,
 				dataAccess.Object,
-				new Mock<ICurrencyPriceConverter>().Object
+				new Mock<IPriceConverter>().Object
 			).Get(pageStart: 0, pageSize: -1)
 		);
 	}
@@ -135,8 +135,8 @@ public class ProductControllerTest
 		const decimal convertedPrice = 1.99m;
 		const string productName = "One";
 
-		var currencyPriceConverter = new Mock<ICurrencyPriceConverter>();
-		currencyPriceConverter.Setup(cpc => cpc.GetPrice("GBP", itemPrice))
+		var priceConverter = new Mock<IPriceConverter>();
+		priceConverter.Setup(pc => pc.GetPrice("GBP", itemPrice))
 			.Returns(convertedPrice);
 
 		var dataAccess = new Mock<IDataAccess<ProductDTO>>();
@@ -157,7 +157,7 @@ public class ProductControllerTest
 				new ProductController(
 					new Mock<ILogger<ProductController>>().Object,
 					dataAccess.Object,
-					currencyPriceConverter.Object
+					priceConverter.Object
 				).Get()
 		);
 	}
@@ -170,8 +170,8 @@ public class ProductControllerTest
 		const decimal convertedPrice = 1.99m;
 		const string productName = "One";
 
-		var currencyPriceConverter = new Mock<ICurrencyPriceConverter>();
-		currencyPriceConverter.Setup(cpc => cpc.GetPrice(currency, itemPrice))
+		var priceConverter = new Mock<IPriceConverter>();
+		priceConverter.Setup(pc => pc.GetPrice(currency, itemPrice))
 			.Returns(convertedPrice);
 
 		var dataAccess = new Mock<IDataAccess<ProductDTO>>();
@@ -192,7 +192,7 @@ public class ProductControllerTest
 				new ProductController(
 					new Mock<ILogger<ProductController>>().Object,
 					dataAccess.Object,
-					currencyPriceConverter.Object
+					priceConverter.Object
 				).Get(currencyCode: currency)
 		);
 	}
