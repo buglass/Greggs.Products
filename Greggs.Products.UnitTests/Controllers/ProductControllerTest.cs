@@ -16,14 +16,19 @@ public class ProductControllerTest
 	[Fact]
 	public void GetWithOversizedPageReturnsAllItems()
 	{
+		const decimal itemPrice = 1.00m;
+		var currencyPriceConverter = new Mock<ICurrencyPriceConverter>();
+		currencyPriceConverter.Setup(cpc => cpc.GetPrice(It.IsAny<string>(), It.IsAny<decimal>()))
+			.Returns(itemPrice);
+
 		IEnumerable<Product> products = new[]
 		{
-			new Product{Name = "One"},
-			new Product{Name = "Two"},
-			new Product{Name = "Three"},
-			new Product{Name = "Four"},
-			new Product{Name = "Five"},
-			new Product{Name = "Six"},
+			new Product{Name = "One", PriceInPounds = itemPrice},
+			new Product{Name = "Two", PriceInPounds = itemPrice},
+			new Product{Name = "Three", PriceInPounds = itemPrice},
+			new Product{Name = "Four", PriceInPounds = itemPrice},
+			new Product{Name = "Five", PriceInPounds = itemPrice},
+			new Product{Name = "Six", PriceInPounds = itemPrice},
 		};
 		var dataAccess = new Mock<IDataAccess<Product>>();
 		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(products);
@@ -43,10 +48,15 @@ public class ProductControllerTest
 	[Fact]
 	public void GetWithUnavailablePageReturnsDefaultPage()
 	{
+		const decimal itemPrice = 1.00m;
+		var currencyPriceConverter = new Mock<ICurrencyPriceConverter>();
+		currencyPriceConverter.Setup(cpc => cpc.GetPrice(It.IsAny<string>(), It.IsAny<decimal>()))
+			.Returns(itemPrice);
+
 		IEnumerable<Product> products = new[]
 		{
-			new Product{Name = "One"},
-			new Product{Name = "Two"},
+			new Product{Name = "One", PriceInPounds = itemPrice},
+			new Product{Name = "Two", PriceInPounds = itemPrice},
 		};
 		var dataAccess = new Mock<IDataAccess<Product>>();
 		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(products);
@@ -66,10 +76,15 @@ public class ProductControllerTest
 	[Fact]
 	public void GetEmptyPageReturnsNoItems()
 	{
+		const decimal itemPrice = 1.00m;
+		var currencyPriceConverter = new Mock<ICurrencyPriceConverter>();
+		currencyPriceConverter.Setup(cpc => cpc.GetPrice(It.IsAny<string>(), It.IsAny<decimal>()))
+			.Returns(itemPrice);
+
 		IEnumerable<Product> products = new[]
 {
-			new Product{Name = "One"},
-			new Product{Name = "Two"},
+			new Product{Name = "One", PriceInPounds = itemPrice},
+			new Product{Name = "Two", PriceInPounds = itemPrice},
 		};
 		var dataAccess = new Mock<IDataAccess<Product>>();
 		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(products);
@@ -93,7 +108,7 @@ public class ProductControllerTest
 			new ProductController(
 				new Mock<ILogger<ProductController>>().Object,
 				dataAccess.Object,
-				new CurrencyPriceConverter(new CurrencyConversionRates())
+				new Mock<ICurrencyPriceConverter>().Object
 			).Get(pageStart: 0, pageSize: -1)
 		);
 	}
