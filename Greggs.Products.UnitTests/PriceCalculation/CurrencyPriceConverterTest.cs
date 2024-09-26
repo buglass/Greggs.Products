@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Greggs.Products.Api.CurrencyPrices;
 using Greggs.Products.Api.PriceCalculation;
+using Moq;
 using Xunit;
 
 namespace Greggs.Products.UnitTests;
@@ -8,26 +10,51 @@ namespace Greggs.Products.UnitTests;
 public class CurrencyPriceConverterTest
 {
 	[Fact]
-	public void GBPReturnsSamePrice()
+	public void PriceConvertedAsExpected()
 	{
-		Assert.Equal(1.00m, new CurrencyPriceConverter(new CurrencyConversionRates()).GetPrice("GBP", 1.00m));
+		var currencyConversionRates = new Mock<ICurrencyConversionRates>();
+		currencyConversionRates.Setup(ccr => ccr.ConversionRates).Returns(
+			new Dictionary<string, decimal>
+			{
+				{ "CUR", 1.11m }
+			}
+		);
+
+		Assert.Equal(
+			2.21m,
+			new CurrencyPriceConverter(currencyConversionRates.Object).GetPrice("CUR", 1.99m)
+		);
 	}
 
 	[Fact]
-	public void EURReturnsAdjustedPrice()
+	public void UnsupportedCurrencyThrowsException()
 	{
-		Assert.Equal(1.11m, new CurrencyPriceConverter(new CurrencyConversionRates()).GetPrice("EUR", 1.00m));
+		var currencyConversionRates = new Mock<ICurrencyConversionRates>();
+		currencyConversionRates.Setup(ccr => ccr.ConversionRates).Returns(
+			new Dictionary<string, decimal>
+			{
+				{ "CUR", 1.00m }
+			}
+		);
+
+		Assert.Throws<ArgumentException>(
+			() => new CurrencyPriceConverter(currencyConversionRates.Object).GetPrice("FOO", 1.00m)
+		);
 	}
 
 	[Fact]
-	public void EURReturnsAdjustedPriceForDecimal()
+	public void ConversionRateOfZeroThrowsException()
 	{
-		Assert.Equal(2.21m, new CurrencyPriceConverter(new CurrencyConversionRates()).GetPrice("EUR", 1.99m));
-	}
+		var currencyConversionRates = new Mock<ICurrencyConversionRates>();
+		currencyConversionRates.Setup(ccr => ccr.ConversionRates).Returns(
+			new Dictionary<string, decimal>
+			{
+				{ "CUR", 0.00m }
+			}
+		);
 
-	[Fact]
-	public void UnsupportedCurrencyThrowsArgumentException()
-	{
-		Assert.Throws<ArgumentException>(() => new CurrencyPriceConverter(new CurrencyConversionRates()).GetPrice("USD", 1.00m));
+		Assert.Throws<InvalidOperationException>(
+			() => new CurrencyPriceConverter(currencyConversionRates.Object).GetPrice("CUR", 1.00m)
+		);
 	}
 }
