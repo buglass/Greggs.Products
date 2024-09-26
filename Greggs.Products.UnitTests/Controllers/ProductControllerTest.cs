@@ -112,4 +112,71 @@ public class ProductControllerTest
 			).Get(pageStart: 0, pageSize: -1)
 		);
 	}
+
+	[Fact]
+	public void GetWithNoCurrencyReturnsGBPPrice()
+	{
+		const decimal itemPrice = 1.00m;
+		const decimal convertedPrice = 1.99m;
+		const string productName = "One";
+
+		var currencyPriceConverter = new Mock<ICurrencyPriceConverter>();
+		currencyPriceConverter.Setup(cpc => cpc.GetPrice("GBP", itemPrice))
+			.Returns(convertedPrice);
+
+		IEnumerable<Product> products = new[]
+		{
+			new Product{Name = productName, PriceInPounds = itemPrice},
+		};
+		var dataAccess = new Mock<IDataAccess<Product>>();
+		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(products);
+
+		Assert.Equivalent(
+			expected:
+				new[]
+				{
+					new Product{Name = productName, PriceInPounds = convertedPrice},
+				},
+			actual:
+				new ProductController(
+					new Mock<ILogger<ProductController>>().Object,
+					dataAccess.Object,
+					currencyPriceConverter.Object
+				).Get()
+		);
+	}
+
+	[Fact]
+	public void GetWithSpecifiedCurrencyReturnsExpectedPrice()
+	{
+		const string currency = "CUR";
+		const decimal itemPrice = 1.00m;
+		const decimal convertedPrice = 1.99m;
+		const string productName = "One";
+
+		var currencyPriceConverter = new Mock<ICurrencyPriceConverter>();
+		currencyPriceConverter.Setup(cpc => cpc.GetPrice(currency, itemPrice))
+			.Returns(convertedPrice);
+
+		IEnumerable<Product> products = new[]
+		{
+			new Product{Name = productName, PriceInPounds = itemPrice},
+		};
+		var dataAccess = new Mock<IDataAccess<Product>>();
+		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(products);
+
+		Assert.Equivalent(
+			expected:
+				new[]
+				{
+					new Product{Name = productName, PriceInPounds = convertedPrice},
+				},
+			actual:
+				new ProductController(
+					new Mock<ILogger<ProductController>>().Object,
+					dataAccess.Object,
+					currencyPriceConverter.Object
+				).Get(currencyCode: currency)
+		);
+	}
 }
