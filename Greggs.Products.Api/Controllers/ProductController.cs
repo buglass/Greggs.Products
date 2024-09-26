@@ -15,9 +15,9 @@ public class ProductController : ControllerBase
 {
     private readonly ILogger<ProductController> _logger;
     private readonly IDataAccess<Product> _dataAccess;
-    private readonly IRegionalPriceCalculation _priceCalculation;
+    private readonly ICurrencyPriceRepository _priceCalculation;
 
-    public ProductController(ILogger<ProductController> logger, IDataAccess<Product> dataAccess, IRegionalPriceCalculation priceCalculation)
+    public ProductController(ILogger<ProductController> logger, IDataAccess<Product> dataAccess, ICurrencyPriceRepository priceCalculation)
     {
         _logger = logger;
         _dataAccess = dataAccess;
@@ -45,7 +45,7 @@ public class ProductController : ControllerBase
             new Product
             {
                 Name = product.Name,
-                PriceInPounds = _priceCalculation.CalculatePrice(currencyCode, product.PriceInPounds)
+                PriceInPounds = _priceCalculation.GetPrice(currencyCode, product.PriceInPounds)
             }
         );
 	}

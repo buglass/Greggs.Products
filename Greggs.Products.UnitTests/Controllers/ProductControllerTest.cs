@@ -31,7 +31,7 @@ public class ProductControllerTest
 			expected:
 				products,
 			actual:
-				new ProductController(new Mock<ILogger<ProductController>>().Object, dataAccess.Object, new CurrencyPriceCalculator())
+				new ProductController(new Mock<ILogger<ProductController>>().Object, dataAccess.Object, new CurrencyPriceRepository())
 				.Get(pageStart: 0, pageSize: 7)
 		);
 	}
@@ -51,7 +51,7 @@ public class ProductControllerTest
 			expected:
 				products,
 			actual:
-				new ProductController(new Mock<ILogger<ProductController>>().Object, dataAccess.Object, new CurrencyPriceCalculator())
+				new ProductController(new Mock<ILogger<ProductController>>().Object, dataAccess.Object, new CurrencyPriceRepository())
 				.Get(pageStart: 1, pageSize: 2)
 		);
 	}
@@ -68,7 +68,7 @@ public class ProductControllerTest
 		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(products);
 
 		Assert.Empty(
-			new ProductController(new Mock<ILogger<ProductController>>().Object, dataAccess.Object, new CurrencyPriceCalculator())
+			new ProductController(new Mock<ILogger<ProductController>>().Object, dataAccess.Object, new CurrencyPriceRepository())
 			.Get(pageStart: 0, pageSize: 0)
 		);
 	}
@@ -80,7 +80,7 @@ public class ProductControllerTest
 		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(new List<Product>());
 
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new ProductController(new Mock<ILogger<ProductController>>().Object, dataAccess.Object, new CurrencyPriceCalculator())
+			new ProductController(new Mock<ILogger<ProductController>>().Object, dataAccess.Object, new CurrencyPriceRepository())
 			.Get(pageStart: 0, pageSize: -1)
 		);
 	}
