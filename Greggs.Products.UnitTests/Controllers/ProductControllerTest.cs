@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Greggs.Products.Api.Controllers;
-using Greggs.Products.Api.CurrencyPrices;
 using Greggs.Products.Api.DataAccess;
 using Greggs.Products.Api.Models;
 using Greggs.Products.Api.PriceCalculation;
