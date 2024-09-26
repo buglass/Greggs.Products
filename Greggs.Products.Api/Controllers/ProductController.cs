@@ -39,9 +39,7 @@ public class ProductController : ControllerBase
             pageStart = 0;
         }
 
-        pageStart = pageStart * pageSize;
-
-        return this._dataAccess.List(pageStart: pageStart, pageSize: pageSize).Select(product =>
+        return this._dataAccess.List(pageStart: pageStart * pageSize, pageSize: pageSize).Select(product =>
             new Product
             {
                 Name = product.Name,
