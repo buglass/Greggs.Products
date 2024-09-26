@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Greggs.Products.Api.Controllers;
+﻿using Greggs.Products.Api.Controllers;
+using Greggs.Products.Api.CurrencyPrices;
 using Greggs.Products.Api.DataAccess;
 using Greggs.Products.Api.Models;
 using Greggs.Products.Api.PriceCalculation;
@@ -26,8 +25,11 @@ public class ProductControllerTest
 					new Product { Name = "Pink Jammie", PriceInPounds = 0.5m },
 				},
 			actual:
-				new ProductController(new Mock<ILogger<ProductController>>().Object, new ProductAccess(), new CurrencyPriceRepository())
-				.Get()
+				new ProductController(
+					new Mock<ILogger<ProductController>>().Object,
+					new ProductAccess(),
+					new CurrencyPriceRepository(new CurrencyConversionRates())
+				).Get()
 		);
 	}
 
@@ -42,8 +44,11 @@ public class ProductControllerTest
 					new Product { Name = "Vegan Sausage Roll", PriceInPounds = 1.1m },
 				},
 			actual:
-				new ProductController(new Mock<ILogger<ProductController>>().Object, new ProductAccess(), new CurrencyPriceRepository())
-				.Get(pageStart: 0, pageSize: 2)
+				new ProductController(
+					new Mock<ILogger<ProductController>>().Object,
+					new ProductAccess(),
+					new CurrencyPriceRepository(new CurrencyConversionRates())
+				).Get(pageStart: 0, pageSize: 2)
 		);
 	}
 
@@ -58,8 +63,11 @@ public class ProductControllerTest
 					new Product { Name = "Yum Yum", PriceInPounds = 0.7m },
 				},
 			actual:
-				new ProductController(new Mock<ILogger<ProductController>>().Object, new ProductAccess(), new CurrencyPriceRepository())
-				.Get(pageStart: 1, pageSize: 2)
+				new ProductController(
+					new Mock<ILogger<ProductController>>().Object,
+					new ProductAccess(),
+					new CurrencyPriceRepository(new CurrencyConversionRates())
+				).Get(pageStart: 1, pageSize: 2)
 		); ;
 	}
 
@@ -77,8 +85,11 @@ public class ProductControllerTest
 					new Product { Name = "Pink Jammie", PriceInPounds = 0.5m },
 				},
 			actual:
-				new ProductController(new Mock<ILogger<ProductController>>().Object, new ProductAccess(), new CurrencyPriceRepository())
-				.Get(pageStart: -1)
+				new ProductController(
+					new Mock<ILogger<ProductController>>().Object,
+					new ProductAccess(),
+					new CurrencyPriceRepository(new CurrencyConversionRates())
+				).Get(pageStart: -1)
 		);
 	}
 }

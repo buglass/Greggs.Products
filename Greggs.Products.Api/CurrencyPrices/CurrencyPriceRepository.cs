@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
+using Greggs.Products.Api.CurrencyPrices;
 
 namespace Greggs.Products.Api.PriceCalculation
 {
 	public class CurrencyPriceRepository : ICurrencyPriceRepository
 	{
-		private static readonly Dictionary<string, decimal> _conversionRates = new()
-		{
-			{ "GBP", 1.00m },
-			{ "EUR", 1.11m }
-		};
+		private readonly ICurrencyConversionRates _currencyConversionRates;
+
+		public CurrencyPriceRepository(ICurrencyConversionRates currencyConversionRates) {
+			_currencyConversionRates = currencyConversionRates;
+		}
 
 		public decimal GetPrice(string currency, decimal priceInPounds)
 		{
-			if (!_conversionRates.TryGetValue(currency, out decimal conversionRate))
+			if (!this._currencyConversionRates.ConversionRates.TryGetValue(currency, out decimal conversionRate))
 				throw new ArgumentException("unsupported currency");
 
 			if (conversionRate == 0)

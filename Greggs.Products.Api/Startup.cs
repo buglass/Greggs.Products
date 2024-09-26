@@ -1,3 +1,4 @@
+using Greggs.Products.Api.CurrencyPrices;
 using Greggs.Products.Api.DataAccess;
 using Greggs.Products.Api.Models;
 using Greggs.Products.Api.PriceCalculation;
@@ -13,6 +14,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
 		services.AddScoped<IDataAccess<Product>, ProductAccess>();
+        services.AddScoped<ICurrencyConversionRates, CurrencyConversionRates>();
 		services.AddScoped<ICurrencyPriceRepository, PriceCalculation.CurrencyPriceRepository>();
 		services.AddControllers();
 		services.AddSwaggerGen();
