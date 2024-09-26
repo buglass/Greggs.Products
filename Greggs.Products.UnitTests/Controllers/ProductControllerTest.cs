@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Greggs.Products.Api.Controllers;
 using Greggs.Products.Api.DataAccess;
 using Greggs.Products.Api.Models;
+using Greggs.Products.Api.PriceCalculation;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
@@ -26,11 +27,11 @@ public class ProductControllerTest
 		var dataAccess = new Mock<IDataAccess<Product>>();
 		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(products);
 
-		Assert.Equal(
+		Assert.Equivalent(
 			expected:
 				products,
 			actual:
-				new ProductController(new Mock<ILogger<ProductController>>().Object, dataAccess.Object)
+				new ProductController(new Mock<ILogger<ProductController>>().Object, dataAccess.Object, new PriceCalculation())
 				.Get(pageStart: 0, pageSize: 7)
 		);
 	}
@@ -46,11 +47,11 @@ public class ProductControllerTest
 		var dataAccess = new Mock<IDataAccess<Product>>();
 		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(products);
 
-		Assert.Equal(
+		Assert.Equivalent(
 			expected:
 				products,
 			actual:
-				new ProductController(new Mock<ILogger<ProductController>>().Object, dataAccess.Object)
+				new ProductController(new Mock<ILogger<ProductController>>().Object, dataAccess.Object, new PriceCalculation())
 				.Get(pageStart: 1, pageSize: 2)
 		);
 	}
@@ -67,7 +68,7 @@ public class ProductControllerTest
 		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(products);
 
 		Assert.Empty(
-			new ProductController(new Mock<ILogger<ProductController>>().Object, dataAccess.Object)
+			new ProductController(new Mock<ILogger<ProductController>>().Object, dataAccess.Object, new PriceCalculation())
 			.Get(pageStart: 0, pageSize: 0)
 		);
 	}
@@ -79,7 +80,7 @@ public class ProductControllerTest
 		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(new List<Product>());
 
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
-			new ProductController(new Mock<ILogger<ProductController>>().Object, dataAccess.Object)
+			new ProductController(new Mock<ILogger<ProductController>>().Object, dataAccess.Object, new PriceCalculation())
 			.Get(pageStart: 0, pageSize: -1)
 		);
 	}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Greggs.Products.Api.DataAccess;
 using Greggs.Products.Api.Models;
+using Greggs.Products.Api.PriceCalculation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -14,15 +15,17 @@ public class ProductController : ControllerBase
 {
     private readonly ILogger<ProductController> _logger;
     private readonly IDataAccess<Product> _dataAccess;
+    private readonly IPriceCalculation _priceCalculation;
 
-    public ProductController(ILogger<ProductController> logger, IDataAccess<Product> dataAccess)
+    public ProductController(ILogger<ProductController> logger, IDataAccess<Product> dataAccess, IPriceCalculation priceCalculation)
     {
         _logger = logger;
         _dataAccess = dataAccess;
+        _priceCalculation = priceCalculation;
     }
 
     [HttpGet]
-    public IEnumerable<Product> Get(int pageStart = 0, int pageSize = 5)
+    public IEnumerable<Product> Get(int pageStart = 0, int pageSize = 5, string currencyCode = "GBP")
     {
         if (pageSize < 0) {
             throw new ArgumentOutOfRangeException(nameof(pageSize));
@@ -38,6 +41,12 @@ public class ProductController : ControllerBase
 
         pageStart = pageStart * pageSize;
 
-		return this._dataAccess.List(pageStart: pageStart, pageSize: pageSize);
+        return this._dataAccess.List(pageStart: pageStart, pageSize: pageSize).Select(product =>
+            new Product
+            {
+                Name = product.Name,
+                PriceInPounds = _priceCalculation.CalculatePrice(currencyCode, product.PriceInPounds)
+            }
+        );
 	}
 }

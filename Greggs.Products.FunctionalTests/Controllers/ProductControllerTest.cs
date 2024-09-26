@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Greggs.Products.Api.Controllers;
 using Greggs.Products.Api.DataAccess;
 using Greggs.Products.Api.Models;
+using Greggs.Products.Api.PriceCalculation;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
@@ -25,7 +26,7 @@ public class ProductControllerTest
 					new Product { Name = "Pink Jammie", PriceInPounds = 0.5m },
 				},
 			actual:
-				new ProductController(new Mock<ILogger<ProductController>>().Object, new ProductAccess())
+				new ProductController(new Mock<ILogger<ProductController>>().Object, new ProductAccess(), new PriceCalculation())
 				.Get()
 		);
 	}
@@ -41,7 +42,7 @@ public class ProductControllerTest
 					new Product { Name = "Vegan Sausage Roll", PriceInPounds = 1.1m },
 				},
 			actual:
-				new ProductController(new Mock<ILogger<ProductController>>().Object, new ProductAccess())
+				new ProductController(new Mock<ILogger<ProductController>>().Object, new ProductAccess(), new PriceCalculation())
 				.Get(pageStart: 0, pageSize: 2)
 		);
 	}
@@ -57,7 +58,7 @@ public class ProductControllerTest
 					new Product { Name = "Yum Yum", PriceInPounds = 0.7m },
 				},
 			actual:
-				new ProductController(new Mock<ILogger<ProductController>>().Object, new ProductAccess())
+				new ProductController(new Mock<ILogger<ProductController>>().Object, new ProductAccess(), new PriceCalculation())
 				.Get(pageStart: 1, pageSize: 2)
 		); ;
 	}
@@ -76,7 +77,7 @@ public class ProductControllerTest
 					new Product { Name = "Pink Jammie", PriceInPounds = 0.5m },
 				},
 			actual:
-				new ProductController(new Mock<ILogger<ProductController>>().Object, new ProductAccess())
+				new ProductController(new Mock<ILogger<ProductController>>().Object, new ProductAccess(), new PriceCalculation())
 				.Get(pageStart: -1)
 		);
 	}
