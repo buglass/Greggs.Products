@@ -49,7 +49,7 @@ public class ProductControllerTest
 				new ProductController(
 					new Mock<ILogger<ProductController>>().Object,
 					dataAccess.Object,
-					new PriceConverter(new ConversionRates())
+					priceConverter.Object
 				).Get(pageStart: 0, pageSize: 7)
 		);
 	}
@@ -82,7 +82,7 @@ public class ProductControllerTest
 				new ProductController(
 					new Mock<ILogger<ProductController>>().Object,
 					dataAccess.Object,
-					new PriceConverter(new ConversionRates())
+					priceConverter.Object
 				).Get(pageStart: 1, pageSize: 2)
 		);
 	}
@@ -108,7 +108,7 @@ public class ProductControllerTest
 			new ProductController(
 				new Mock<ILogger<ProductController>>().Object,
 				dataAccess.Object,
-				new PriceConverter(new ConversionRates())
+				priceConverter.Object
 			).Get(pageStart: 0, pageSize: 0)
 		);
 	}
