@@ -13,7 +13,7 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-		services.AddSingleton<IDataAccess<Product>, ProductAccess>();
+		services.AddSingleton<IDataAccess<ProductDTO>, ProductAccess>();
         services.AddSingleton<ICurrencyConversionRates, CurrencyConversionRates>();
 		services.AddScoped<ICurrencyPriceConverter, PriceCalculation.CurrencyPriceConverter>();
 		services.AddControllers();

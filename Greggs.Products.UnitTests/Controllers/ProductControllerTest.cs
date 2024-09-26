@@ -21,21 +21,30 @@ public class ProductControllerTest
 		currencyPriceConverter.Setup(cpc => cpc.GetPrice(It.IsAny<string>(), It.IsAny<decimal>()))
 			.Returns(itemPrice);
 
-		IEnumerable<Product> products = new[]
-		{
-			new Product{Name = "One", PriceInPounds = itemPrice},
-			new Product{Name = "Two", PriceInPounds = itemPrice},
-			new Product{Name = "Three", PriceInPounds = itemPrice},
-			new Product{Name = "Four", PriceInPounds = itemPrice},
-			new Product{Name = "Five", PriceInPounds = itemPrice},
-			new Product{Name = "Six", PriceInPounds = itemPrice},
-		};
-		var dataAccess = new Mock<IDataAccess<Product>>();
-		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(products);
+		var dataAccess = new Mock<IDataAccess<ProductDTO>>();
+		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(
+			new[]
+			{
+				new ProductDTO{Name = "One", PriceInPounds = itemPrice},
+				new ProductDTO{Name = "Two", PriceInPounds = itemPrice},
+				new ProductDTO{Name = "Three", PriceInPounds = itemPrice},
+				new ProductDTO{Name = "Four", PriceInPounds = itemPrice},
+				new ProductDTO{Name = "Five", PriceInPounds = itemPrice},
+				new ProductDTO{Name = "Six", PriceInPounds = itemPrice},
+			}
+		);
 
 		Assert.Equivalent(
 			expected:
-				products,
+				new[]
+				{
+					new Product{Name = "One", Price = itemPrice},
+					new Product{Name = "Two", Price = itemPrice},
+					new Product{Name = "Three", Price = itemPrice},
+					new Product{Name = "Four", Price = itemPrice},
+					new Product{Name = "Five", Price = itemPrice},
+					new Product{Name = "Six", Price = itemPrice},
+				},
 			actual:
 				new ProductController(
 					new Mock<ILogger<ProductController>>().Object,
@@ -53,17 +62,22 @@ public class ProductControllerTest
 		currencyPriceConverter.Setup(cpc => cpc.GetPrice(It.IsAny<string>(), It.IsAny<decimal>()))
 			.Returns(itemPrice);
 
-		IEnumerable<Product> products = new[]
-		{
-			new Product{Name = "One", PriceInPounds = itemPrice},
-			new Product{Name = "Two", PriceInPounds = itemPrice},
-		};
-		var dataAccess = new Mock<IDataAccess<Product>>();
-		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(products);
+		var dataAccess = new Mock<IDataAccess<ProductDTO>>();
+		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(
+			new[]
+			{
+				new ProductDTO { Name = "One", PriceInPounds = itemPrice },
+				new ProductDTO { Name = "Two", PriceInPounds = itemPrice },
+			}
+		);
 
 		Assert.Equivalent(
 			expected:
-				products,
+				new[]
+				{
+					new Product { Name = "One", Price = itemPrice },
+					new Product { Name = "Two", Price = itemPrice },
+				},
 			actual:
 				new ProductController(
 					new Mock<ILogger<ProductController>>().Object,
@@ -81,13 +95,14 @@ public class ProductControllerTest
 		currencyPriceConverter.Setup(cpc => cpc.GetPrice(It.IsAny<string>(), It.IsAny<decimal>()))
 			.Returns(itemPrice);
 
-		IEnumerable<Product> products = new[]
-{
-			new Product{Name = "One", PriceInPounds = itemPrice},
-			new Product{Name = "Two", PriceInPounds = itemPrice},
-		};
-		var dataAccess = new Mock<IDataAccess<Product>>();
-		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(products);
+		var dataAccess = new Mock<IDataAccess<ProductDTO>>();
+		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(
+			new[]
+			{
+				new ProductDTO { Name = "One", PriceInPounds = itemPrice },
+				new ProductDTO { Name = "Two", PriceInPounds = itemPrice },
+			}
+		);
 
 		Assert.Empty(
 			new ProductController(
@@ -101,8 +116,8 @@ public class ProductControllerTest
 	[Fact]
 	public void GetPageSizeBelowZeroThrowsRangeException()
 	{
-		var dataAccess = new Mock<IDataAccess<Product>>();
-		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(new List<Product>());
+		var dataAccess = new Mock<IDataAccess<ProductDTO>>();
+		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(new List<ProductDTO>());
 
 		Assert.Throws<ArgumentOutOfRangeException>(() =>
 			new ProductController(
@@ -124,18 +139,19 @@ public class ProductControllerTest
 		currencyPriceConverter.Setup(cpc => cpc.GetPrice("GBP", itemPrice))
 			.Returns(convertedPrice);
 
-		IEnumerable<Product> products = new[]
-		{
-			new Product{Name = productName, PriceInPounds = itemPrice},
-		};
-		var dataAccess = new Mock<IDataAccess<Product>>();
-		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(products);
+		var dataAccess = new Mock<IDataAccess<ProductDTO>>();
+		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(
+			new[]
+			{
+				new ProductDTO{Name = productName, PriceInPounds = itemPrice},
+			}
+		);
 
 		Assert.Equivalent(
 			expected:
 				new[]
 				{
-					new Product{Name = productName, PriceInPounds = convertedPrice},
+					new Product{Name = productName, Price = convertedPrice},
 				},
 			actual:
 				new ProductController(
@@ -158,18 +174,19 @@ public class ProductControllerTest
 		currencyPriceConverter.Setup(cpc => cpc.GetPrice(currency, itemPrice))
 			.Returns(convertedPrice);
 
-		IEnumerable<Product> products = new[]
-		{
-			new Product{Name = productName, PriceInPounds = itemPrice},
-		};
-		var dataAccess = new Mock<IDataAccess<Product>>();
-		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(products);
+		var dataAccess = new Mock<IDataAccess<ProductDTO>>();
+		dataAccess.Setup(da => da.List(It.IsAny<int>(), It.IsAny<int>())).Returns(
+			new[]
+			{
+				new ProductDTO{Name = productName, PriceInPounds = itemPrice},
+			}
+		);
 
 		Assert.Equivalent(
 			expected:
 				new[]
 				{
-					new Product{Name = productName, PriceInPounds = convertedPrice},
+					new Product{Name = productName, Price = convertedPrice},
 				},
 			actual:
 				new ProductController(

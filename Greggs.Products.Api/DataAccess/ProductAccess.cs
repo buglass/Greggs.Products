@@ -7,9 +7,9 @@ namespace Greggs.Products.Api.DataAccess;
 /// <summary>
 /// DISCLAIMER: This is only here to help enable the purpose of this exercise, this doesn't reflect the way we work!
 /// </summary>
-public class ProductAccess : IDataAccess<Product>
+public class ProductAccess : IDataAccess<ProductDTO>
 {
-    private static readonly IEnumerable<Product> ProductDatabase = new List<Product>()
+    private static readonly IEnumerable<ProductDTO> ProductDatabase = new List<ProductDTO>()
     {
         new() { Name = "Sausage Roll", PriceInPounds = 1m },
         new() { Name = "Vegan Sausage Roll", PriceInPounds = 1.1m },
@@ -21,7 +21,7 @@ public class ProductAccess : IDataAccess<Product>
         new() { Name = "Coca Cola", PriceInPounds = 1.2m }
     };
 
-    public IEnumerable<Product> List(int? pageStart, int? pageSize)
+    public IEnumerable<ProductDTO> List(int? pageStart, int? pageSize)
     {
         var queryable = ProductDatabase.AsQueryable();
 

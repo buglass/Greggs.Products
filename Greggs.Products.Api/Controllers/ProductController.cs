@@ -14,10 +14,10 @@ namespace Greggs.Products.Api.Controllers;
 public class ProductController : ControllerBase
 {
     private readonly ILogger<ProductController> _logger;
-    private readonly IDataAccess<Product> _dataAccess;
+    private readonly IDataAccess<ProductDTO> _dataAccess;
     private readonly ICurrencyPriceConverter _priceCalculation;
 
-    public ProductController(ILogger<ProductController> logger, IDataAccess<Product> dataAccess, ICurrencyPriceConverter priceCalculation)
+    public ProductController(ILogger<ProductController> logger, IDataAccess<ProductDTO> dataAccess, ICurrencyPriceConverter priceCalculation)
     {
         _logger = logger;
         _dataAccess = dataAccess;
@@ -43,7 +43,7 @@ public class ProductController : ControllerBase
             new Product
             {
                 Name = product.Name,
-                PriceInPounds = _priceCalculation.GetPrice(currencyCode, product.PriceInPounds)
+                Price = _priceCalculation.GetPrice(currencyCode, product.PriceInPounds)
             }
         );
 	}

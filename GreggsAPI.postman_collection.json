@@ -156,7 +156,7 @@
 							"        [\r",
 							"            {\r",
 							"                \"name\": \"Sausage Roll\",\r",
-							"                \"priceInPounds\": 1.11\r",
+							"                \"price\": 1.11\r",
 							"            }\r",
 							"        ]\r",
 							"    );\r",
