@@ -15,7 +15,7 @@ public class Startup
     {
 		services.AddScoped<IDataAccess<Product>, ProductAccess>();
         services.AddScoped<ICurrencyConversionRates, CurrencyConversionRates>();
-		services.AddScoped<ICurrencyPriceRepository, PriceCalculation.CurrencyPriceRepository>();
+		services.AddScoped<ICurrencyPriceConverter, PriceCalculation.CurrencyPriceConverter>();
 		services.AddControllers();
 		services.AddSwaggerGen();
     }

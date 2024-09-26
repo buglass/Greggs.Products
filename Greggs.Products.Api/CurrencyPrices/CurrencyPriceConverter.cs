@@ -3,11 +3,11 @@ using Greggs.Products.Api.CurrencyPrices;
 
 namespace Greggs.Products.Api.PriceCalculation
 {
-	public class CurrencyPriceRepository : ICurrencyPriceRepository
+	public class CurrencyPriceConverter : ICurrencyPriceConverter
 	{
 		private readonly ICurrencyConversionRates _currencyConversionRates;
 
-		public CurrencyPriceRepository(ICurrencyConversionRates currencyConversionRates) {
+		public CurrencyPriceConverter(ICurrencyConversionRates currencyConversionRates) {
 			_currencyConversionRates = currencyConversionRates;
 		}
 
