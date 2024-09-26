@@ -2,7 +2,7 @@
 
 namespace Greggs.Products.Api.PriceCalculation
 {
-	public interface IPriceCalculation
+	public interface IRegionalPriceCalculation
 	{
 		decimal CalculatePrice(string currency, decimal priceInPounds);
 	}

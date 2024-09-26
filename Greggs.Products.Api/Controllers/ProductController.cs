@@ -15,9 +15,9 @@ public class ProductController : ControllerBase
 {
     private readonly ILogger<ProductController> _logger;
     private readonly IDataAccess<Product> _dataAccess;
-    private readonly IPriceCalculation _priceCalculation;
+    private readonly IRegionalPriceCalculation _priceCalculation;
 
-    public ProductController(ILogger<ProductController> logger, IDataAccess<Product> dataAccess, IPriceCalculation priceCalculation)
+    public ProductController(ILogger<ProductController> logger, IDataAccess<Product> dataAccess, IRegionalPriceCalculation priceCalculation)
     {
         _logger = logger;
         _dataAccess = dataAccess;
