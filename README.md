@@ -40,6 +40,6 @@ user stories:
 
 ## Tests
 
-### Integration tests
+### API tests
 
-These can be run with Newman `newman run GreggsIntegration.postman_collection.json --insecure`
+These can be run with Newman `newman run GreggsAPI.postman_collection.json --insecure`
