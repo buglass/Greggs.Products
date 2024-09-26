@@ -13,7 +13,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
 		services.AddScoped<IDataAccess<Product>, ProductAccess>();
-		services.AddScoped<IPriceCalculation, PriceCalculation.PriceCalculation>();
+		services.AddScoped<IPriceCalculation, PriceCalculation.CurrencyPriceCalculator>();
 		services.AddControllers();
 		services.AddSwaggerGen();
     }
